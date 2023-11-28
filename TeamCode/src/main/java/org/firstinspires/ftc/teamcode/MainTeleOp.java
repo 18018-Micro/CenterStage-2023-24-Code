@@ -8,18 +8,10 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class MainTeleOp extends LinearOpMode {
 
-    private DcMotor cm1;
-    private DcMotor cm2;
-    private DcMotor cm3;
-    private DcMotor cm4;
     private DcMotor intakeMotor;
     private DcMotorEx armExtender;
     private DcMotorEx armPitch;
     private Servo pixelBayServo;
-
-    public void move(int x, int y) {
-
-    }
 
     // This function is executed when this Op Mode is selected from the Driver Station.
     public void runOpMode() {
@@ -32,10 +24,10 @@ public class MainTeleOp extends LinearOpMode {
         double powerLimiter = 0.60;
 
 
-        cm1 = hardwareMap.dcMotor.get("chm1");
-        cm2 = hardwareMap.dcMotor.get("chm2");
-        cm3 = hardwareMap.dcMotor.get("chm3");
-        cm4 = hardwareMap.dcMotor.get("chm4");
+        DcMotor cm1 = hardwareMap.dcMotor.get("chm1");
+        DcMotor cm2 = hardwareMap.dcMotor.get("chm2");
+        DcMotor cm3 = hardwareMap.dcMotor.get("chm3");
+        DcMotor cm4 = hardwareMap.dcMotor.get("chm4");
 
 
         cm1.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -52,7 +44,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 //turning script
                 double rotate = 0;
-                boolean rotating = false;
+                boolean rotating;
                 turningPower = 0.85;
                 int slowDriveLimiter = 4;
 
@@ -65,12 +57,11 @@ public class MainTeleOp extends LinearOpMode {
                     rotate = turningPower;
                 } else {
                     rotating = false;
-                    turningPower = 0;
                 }
 
                 // straight script
                 boolean straight = false;
-                double straightPwr = 0;
+                double straightPwr;
 
                 if (gamepad1.right_trigger > 0) {
                     straight = true;
@@ -79,7 +70,6 @@ public class MainTeleOp extends LinearOpMode {
                     straight = true;
                     straightPwr = -gamepad1.left_trigger;
                 } else {
-                    straight = false;
                     straightPwr = 0;
                 }
 
