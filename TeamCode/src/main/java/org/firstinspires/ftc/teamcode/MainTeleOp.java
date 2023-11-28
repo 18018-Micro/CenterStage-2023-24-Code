@@ -8,11 +8,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class MainTeleOp extends LinearOpMode {
 
-    private DcMotor intakeMotor;
-    private DcMotorEx armExtender;
-    private DcMotorEx armPitch;
-    private Servo pixelBayServo;
-
     // This function is executed when this Op Mode is selected from the Driver Station.
     public void runOpMode() {
 
@@ -29,6 +24,10 @@ public class MainTeleOp extends LinearOpMode {
         DcMotor cm3 = hardwareMap.dcMotor.get("chm3");
         DcMotor cm4 = hardwareMap.dcMotor.get("chm4");
 
+        DcMotor intakeMotor = hardwareMap.dcMotor.get("intakeMotor");
+        DcMotorEx armExtender = (DcMotorEx) hardwareMap.dcMotor.get("armExtender");
+        DcMotorEx armPitch = (DcMotorEx) hardwareMap.dcMotor.get("armPitch");
+        Servo pixelBayServo = hardwareMap.servo.get("pixelBayServo");
 
         cm1.setDirection(DcMotorSimple.Direction.REVERSE);
         cm2.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -144,12 +143,23 @@ public class MainTeleOp extends LinearOpMode {
                 cm3.setPower(cm3_target * powerLimiter);
                 cm4.setPower(cm4_target * powerLimiter);
 
+
+                // intake script
+                if (gamepad2.right_trigger > 0) {
+                    intakeMotor.setPower(gamepad2.right_trigger);
+                } else if (gamepad2.left_trigger > 0) {
+                    intakeMotor.setPower(-gamepad2.left_trigger);
+                } else {
+                    intakeMotor.setPower(0);
+                }
+
                 // Add telemetry data, so we can observe what is happening on the Driver app
-                telemetry.addData("cm1", cm1_target);
-                telemetry.addData("cm2", cm2_target);
-                telemetry.addData("cm3", cm3_target);
-                telemetry.addData("cm4", cm4_target);
-                telemetry.addData("rotating", rotating);
+//                telemetry.addData("cm1", cm1_target);
+//                telemetry.addData("cm2", cm2_target);
+//                telemetry.addData("cm3", cm3_target);
+//                telemetry.addData("cm4", cm4_target);
+//                telemetry.addData("rotating", rotating);
+                telemetry.addData("intake_power", intakeMotor.getPower());
                 telemetry.update();
             }
         }
