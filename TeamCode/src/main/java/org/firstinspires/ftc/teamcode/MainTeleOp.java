@@ -1,3 +1,4 @@
+// Team 20148 Micropa
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -18,6 +19,9 @@ public class MainTeleOp extends LinearOpMode {
         double turningPower;
         double powerLimiter = 0.60;
 
+        double armPitchTarget = 0;
+        double armPitchMax = 100;
+
 
         DcMotor cm1 = hardwareMap.dcMotor.get("chm1");
         DcMotor cm2 = hardwareMap.dcMotor.get("chm2");
@@ -34,8 +38,16 @@ public class MainTeleOp extends LinearOpMode {
         cm3.setDirection(DcMotorSimple.Direction.FORWARD);
         cm4.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        armPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         waitForStart();
         if (opModeIsActive()) {
+
+            armPitch.setTargetPosition(0);
+            armPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armExtender.setTargetPosition(0);
+            armExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             while (opModeIsActive()) {
                 // Back left:cm1, back right:cm2
@@ -153,6 +165,19 @@ public class MainTeleOp extends LinearOpMode {
                     intakeMotor.setPower(0);
                 }
 
+
+                // arm pitch
+                if (gamepad2.left_stick_y > 0) {
+                    while (armPitchTarget < armPitchMax) {
+                        armPitchTarget += 1;
+                    }
+                } else if (gamepad2.left_stick_y < 0) {
+                    while (armPitchTarget > 0) {
+                        armPitchTarget -= 1;
+                    }
+                }
+
+
                 // Add telemetry data, so we can observe what is happening on the Driver app
 //                telemetry.addData("cm1", cm1_target);
 //                telemetry.addData("cm2", cm2_target);
@@ -160,6 +185,7 @@ public class MainTeleOp extends LinearOpMode {
 //                telemetry.addData("cm4", cm4_target);
 //                telemetry.addData("rotating", rotating);
                 telemetry.addData("intake_power", intakeMotor.getPower());
+                telemetry.addData("armPitchTarget", armPitchTarget);
                 telemetry.update();
             }
         }
