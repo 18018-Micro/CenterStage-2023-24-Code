@@ -19,8 +19,11 @@ public class MainTeleOp extends LinearOpMode {
         double turningPower;
         double powerLimiter = 0.60;
 
-        double armPitchTarget = 0;
+        int armPitchTarget = 0;
         double armPitchMax = 100;
+        int armExtenderTarget = 0;
+        double armExtenderMax = 200;
+
 
 
         DcMotor cm1 = hardwareMap.dcMotor.get("chm1");
@@ -177,6 +180,20 @@ public class MainTeleOp extends LinearOpMode {
                     }
                 }
 
+                // arm extension
+                if (gamepad2.right_bumper) {
+                    while (armExtenderTarget < armExtenderMax) {
+                        armExtenderTarget += 1;
+                    }
+                } else if (gamepad2.left_bumper) {
+                    while (armExtenderTarget > 0) {
+                        armExtenderTarget -= 1;
+                    }
+                }
+
+                armPitch.setTargetPosition(armPitchTarget);
+                armExtender.setTargetPosition(armExtenderTarget);
+
 
                 // Add telemetry data, so we can observe what is happening on the Driver app
 //                telemetry.addData("cm1", cm1_target);
@@ -186,6 +203,7 @@ public class MainTeleOp extends LinearOpMode {
 //                telemetry.addData("rotating", rotating);
                 telemetry.addData("intake_power", intakeMotor.getPower());
                 telemetry.addData("armPitchTarget", armPitchTarget);
+                telemetry.addData("armExtenderTarget", armExtenderTarget);
                 telemetry.update();
             }
         }
