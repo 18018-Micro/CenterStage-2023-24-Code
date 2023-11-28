@@ -1,4 +1,4 @@
-// Team 20148 Micropa
+// Team 20148 Micropachycephalosaurus
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
