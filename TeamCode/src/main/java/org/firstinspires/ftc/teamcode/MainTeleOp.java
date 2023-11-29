@@ -53,8 +53,18 @@ public class MainTeleOp extends LinearOpMode {
             armExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             while (opModeIsActive()) {
+                // Control Hub
                 // Back left:cm1, back right:cm2
                 // Front left:cm3, front right:cm4
+
+                // Expansion Hub:
+                // 0: armPitch
+                // 1:
+                // 2: intakeMotor
+                // 3: armExtension
+
+                // Servo (CH):
+                // 0: pixelBayServo
 
                 //turning script
                 double rotate = 0;
