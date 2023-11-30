@@ -6,10 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+@TeleOp(name = "MainTeleOp", group = "")
 public class MainTeleOp extends LinearOpMode {
 
     // This function is executed when this Op Mode is selected from the Driver Station.
+    @Override
     public void runOpMode() {
 
         double cm1_target;
@@ -23,6 +26,8 @@ public class MainTeleOp extends LinearOpMode {
         double armPitchMax = 100;
         int armExtenderTarget = 0;
         double armExtenderMax = 200;
+        int armPitchVelo = 50;
+        int armExtenderVelo = 50;
 
 
 
@@ -36,10 +41,10 @@ public class MainTeleOp extends LinearOpMode {
         DcMotorEx armPitch = (DcMotorEx) hardwareMap.dcMotor.get("armPitch");
         Servo pixelBayServo = hardwareMap.servo.get("pixelBayServo");
 
-        cm1.setDirection(DcMotorSimple.Direction.REVERSE);
+        cm1.setDirection(DcMotorSimple.Direction.FORWARD);
         cm2.setDirection(DcMotorSimple.Direction.FORWARD);
-        cm3.setDirection(DcMotorSimple.Direction.FORWARD);
-        cm4.setDirection(DcMotorSimple.Direction.REVERSE);
+        cm3.setDirection(DcMotorSimple.Direction.REVERSE);
+        cm4.setDirection(DcMotorSimple.Direction.FORWARD);
 
         armPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -180,29 +185,25 @@ public class MainTeleOp extends LinearOpMode {
 
 
                 // arm pitch
-                if (gamepad2.left_stick_y > 0) {
-                    while (armPitchTarget < armPitchMax) {
+                if (gamepad2.left_stick_y > 0 && armPitchTarget < armPitchMax) {
                         armPitchTarget += 1;
-                    }
-                } else if (gamepad2.left_stick_y < 0) {
-                    while (armPitchTarget > 0) {
-                        armPitchTarget -= 1;
-                    }
+                        armPitch.setTargetPosition(armPitchTarget);
+                } else if (gamepad2.left_stick_y < 0 && armPitchTarget > 0) {
+                    armPitchTarget -= 1;
+                    armPitch.setTargetPosition(armPitchTarget);
                 }
 
                 // arm extension
-                if (gamepad2.right_bumper) {
-                    while (armExtenderTarget < armExtenderMax) {
-                        armExtenderTarget += 1;
-                    }
-                } else if (gamepad2.left_bumper) {
-                    while (armExtenderTarget > 0) {
-                        armExtenderTarget -= 1;
-                    }
+                if (gamepad2.right_bumper && armExtenderTarget < armExtenderMax) {
+                    armExtenderTarget += 1;
+                    armExtender.setTargetPosition(armExtenderTarget);
+                } else if (gamepad2.left_bumper && armExtenderTarget > -100) {
+                    armExtenderTarget -= 1;
+                    armExtender.setTargetPosition(armExtenderTarget);
                 }
 
-                armPitch.setTargetPosition(armPitchTarget);
-                armExtender.setTargetPosition(armExtenderTarget);
+                armPitch.setVelocity(armPitchVelo);
+                armExtender.setVelocity(armExtenderVelo);
 
 
                 // Add telemetry data, so we can observe what is happening on the Driver app
@@ -211,9 +212,11 @@ public class MainTeleOp extends LinearOpMode {
 //                telemetry.addData("cm3", cm3_target);
 //                telemetry.addData("cm4", cm4_target);
 //                telemetry.addData("rotating", rotating);
-                telemetry.addData("intake_power", intakeMotor.getPower());
+//                telemetry.addData("intake_power", intakeMotor.getPower());
                 telemetry.addData("armPitchTarget", armPitchTarget);
+                telemetry.addData("armPitchPosition", armPitch.getCurrentPosition());
                 telemetry.addData("armExtenderTarget", armExtenderTarget);
+                telemetry.addData("armExtenderPosition", armExtender.getCurrentPosition());
                 telemetry.update();
             }
         }
