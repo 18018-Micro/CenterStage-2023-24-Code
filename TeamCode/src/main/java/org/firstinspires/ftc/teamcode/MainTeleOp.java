@@ -56,6 +56,8 @@ public class MainTeleOp extends LinearOpMode {
             armPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armExtender.setTargetPosition(0);
             armExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            armPitch.setPower(0.5);
+            armExtender.setPower(0.5);
 
             while (opModeIsActive()) {
                 // Control Hub
@@ -202,9 +204,6 @@ public class MainTeleOp extends LinearOpMode {
                     armExtender.setTargetPosition(armExtenderTarget);
                 }
 
-                armPitch.setVelocity(armPitchVelo);
-                armExtender.setVelocity(armExtenderVelo);
-
 
                 // Add telemetry data, so we can observe what is happening on the Driver app
 //                telemetry.addData("cm1", cm1_target);
@@ -215,8 +214,10 @@ public class MainTeleOp extends LinearOpMode {
 //                telemetry.addData("intake_power", intakeMotor.getPower());
                 telemetry.addData("armPitchTarget", armPitchTarget);
                 telemetry.addData("armPitchPosition", armPitch.getCurrentPosition());
+                telemetry.addData("armPitchVelo", armPitch.getVelocity());
                 telemetry.addData("armExtenderTarget", armExtenderTarget);
                 telemetry.addData("armExtenderPosition", armExtender.getCurrentPosition());
+                telemetry.addData("armPitchVelo", armPitch.getVelocity());
                 telemetry.update();
             }
         }
