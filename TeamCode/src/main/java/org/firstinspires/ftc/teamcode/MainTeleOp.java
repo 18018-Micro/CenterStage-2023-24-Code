@@ -45,8 +45,12 @@ public class MainTeleOp extends LinearOpMode {
         cm2.setDirection(DcMotorSimple.Direction.FORWARD);
         cm3.setDirection(DcMotorSimple.Direction.REVERSE);
         cm4.setDirection(DcMotorSimple.Direction.FORWARD);
+        armPitch.setDirection(DcMotorSimple.Direction.REVERSE);
+        armExtender.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        armPitch.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armExtender.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         waitForStart();
@@ -56,7 +60,7 @@ public class MainTeleOp extends LinearOpMode {
             armPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armExtender.setTargetPosition(0);
             armExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armPitch.setPower(0.5);
+            armPitch.setPower(0.85);
             armExtender.setPower(0.5);
 
             while (opModeIsActive()) {
@@ -66,8 +70,8 @@ public class MainTeleOp extends LinearOpMode {
 
                 // Expansion Hub:
                 // 0: armPitch
-                // 1:
-                // 2: intakeMotor
+                // 1: intakeMotor
+                // 2:
                 // 3: armExtension
 
                 // Servo (CH):
@@ -199,9 +203,11 @@ public class MainTeleOp extends LinearOpMode {
                 if (gamepad2.right_bumper && armExtenderTarget < armExtenderMax) {
                     armExtenderTarget += 1;
                     armExtender.setTargetPosition(armExtenderTarget);
+                    armExtender.setVelocity(0.3);
                 } else if (gamepad2.left_bumper && armExtenderTarget > -100) {
                     armExtenderTarget -= 1;
                     armExtender.setTargetPosition(armExtenderTarget);
+                    armExtender.setVelocity(-0.3);
                 }
 
 
