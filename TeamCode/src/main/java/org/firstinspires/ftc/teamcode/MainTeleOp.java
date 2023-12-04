@@ -41,10 +41,10 @@ public class MainTeleOp extends LinearOpMode {
         DcMotorEx armPitch = (DcMotorEx) hardwareMap.dcMotor.get("armPitch");
         Servo pixelBayServo = hardwareMap.servo.get("pixelBayServo");
 
-        cm1.setDirection(DcMotorSimple.Direction.FORWARD);
+        cm1.setDirection(DcMotorSimple.Direction.REVERSE);
         cm2.setDirection(DcMotorSimple.Direction.FORWARD);
         cm3.setDirection(DcMotorSimple.Direction.REVERSE);
-        cm4.setDirection(DcMotorSimple.Direction.FORWARD);
+        cm4.setDirection(DcMotorSimple.Direction.REVERSE);
         armPitch.setDirection(DcMotorSimple.Direction.REVERSE);
         armExtender.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -76,6 +76,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 // Servo (CH):
                 // 0: pixelBayServo
+                // 1: pixelBayCover
 
                 //turning script
                 double rotate = 0;
@@ -110,60 +111,123 @@ public class MainTeleOp extends LinearOpMode {
 
 
                 // Math for full rotational movement (anywhere with the joystick)
-                if ((Math.abs(gamepad1.left_stick_x) + Math.abs(gamepad1.left_stick_y) > 0.15) || rotating || straight) {
+//                if ((Math.abs(gamepad1.left_stick_x) + Math.abs(gamepad1.left_stick_y) > 0.15) || rotating || straight) {
+//                    if (gamepad1.left_stick_x >= 0 && -gamepad1.left_stick_y >= 0) {
+//                        // Quadrant I
+//                        cm1_target = Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
+//                        cm2_target = -Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
+//                        cm3_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
+//                        cm4_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
+//                    } else if (gamepad1.right_stick_x >= 0 && -gamepad1.right_stick_y >= 0) {
+//                        // Quadrant I
+//                        cm1_target = (Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm2_target = (-Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm3_target = (Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) /slowDriveLimiter;
+//                        cm4_target = (-Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr))/slowDriveLimiter;
+//                    } else if (gamepad1.left_stick_x < 0 && -gamepad1.left_stick_y > 0) {
+//                        // Quadrant II
+//                        cm1_target = -Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
+//                        cm2_target = Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
+//                        cm3_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
+//                        cm4_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
+//                    } else if (gamepad1.right_stick_x < 0 && -gamepad1.right_stick_y > 0) {
+//                        // Quadrant II slow speed
+//                        cm1_target = (-Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm2_target = (Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm3_target = (-Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm4_target = (Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
+//                    } else if (gamepad1.left_stick_x <= 0 && -gamepad1.left_stick_y <= 0) {
+//                        // Quadrant III
+//                        cm1_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
+//                        cm2_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
+//                        cm3_target = -Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
+//                        cm4_target = Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
+//                    } else if (gamepad1.right_stick_x <= 0 && -gamepad1.right_stick_y <= 0) {
+//                        // Quadrant III slow speed
+//                        cm1_target = (-Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr))/ slowDriveLimiter;
+//                        cm2_target = (Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm3_target = (-Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm4_target = (Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
+//                    } else if (gamepad1.left_stick_x > 0 && -gamepad1.left_stick_y < 0) {
+//                        // Quadrant IV
+//                        cm1_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
+//                        cm2_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
+//                        cm3_target = Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
+//                        cm4_target = -Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
+//                    } else if (gamepad1.right_stick_x > 0 && -gamepad1.right_stick_y < 0) {
+//                        // Quadrant IV slower speed
+//                        cm1_target = (Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm2_target = (-Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm3_target = (Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
+//                        cm4_target = (-Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
+//                    } else {
+//                        cm1_target = rotate + straightPwr;
+//                        cm2_target = -rotate + straightPwr;
+//                        cm3_target = -rotate + straightPwr;
+//                        cm4_target = rotate + straightPwr;
+//                    }
+//                } else {
+//                    // Reset our motors
+//                    cm1_target = 0;
+//                    cm2_target = 0;
+//                    cm3_target = 0;
+//                    cm4_target = 0;
+//                }
+
+                if ((Math.abs(gamepad1.left_stick_x) + Math.abs(gamepad1.left_stick_y) > 0.15) || rotating || (Math.abs(gamepad1.right_stick_x) + Math.abs(gamepad1.right_stick_y) > 0.15)) {
                     if (gamepad1.left_stick_x >= 0 && -gamepad1.left_stick_y >= 0) {
                         // Quadrant I
-                        cm1_target = Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
-                        cm2_target = -Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
-                        cm3_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
-                        cm4_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
-                    } else if (gamepad1.right_stick_x >= 0 && -gamepad1.right_stick_y >= 0) {
+                        cm1_target = Math.pow(gamepad1.left_stick_x, 2) + -Math.pow(gamepad1.left_stick_y, 2) + (rotate);
+                        cm2_target = -Math.pow(gamepad1.left_stick_x, 2) + -Math.pow(gamepad1.left_stick_y, 2) + (-rotate);
+                        cm3_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate);
+                        cm4_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate);
+                    }/* else if (gamepad1.right_stick_x >= 0 && -gamepad1.right_stick_y >= 0) {
                         // Quadrant I
-                        cm1_target = (Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm2_target = (-Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm3_target = (Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) /slowDriveLimiter;
-                        cm4_target = (-Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr))/slowDriveLimiter;
-                    } else if (gamepad1.left_stick_x < 0 && -gamepad1.left_stick_y > 0) {
+                        cm1_target = (Math.pow(gamepad1.right_stick_x, 2) + -Math.pow(gamepad1.right_stick_y, 2) + (rotate)) / slowDriveLimiter;
+                        cm2_target = (-Math.pow(gamepad1.right_stick_x, 2) + -Math.pow(gamepad1.right_stick_y, 2) + (-rotate)) / slowDriveLimiter;
+                        cm3_target = (Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2) + (-rotate)) /slowDriveLimiter;
+                        cm4_target = (-Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2) + (rotate))/slowDriveLimiter;
+                    } */ else if (gamepad1.left_stick_x < 0 && -gamepad1.left_stick_y > 0) {
                         // Quadrant II
-                        cm1_target = -Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
-                        cm2_target = Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
-                        cm3_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
-                        cm4_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
-                    } else if (gamepad1.right_stick_x < 0 && -gamepad1.right_stick_y > 0) {
+                        cm1_target = -Math.pow(gamepad1.left_stick_x, 2) + -Math.pow(gamepad1.left_stick_y, 2) + (rotate);
+                        cm2_target = Math.pow(gamepad1.left_stick_x, 2) + -Math.pow(gamepad1.left_stick_y, 2) + (-rotate);
+                        cm3_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate);
+                        cm4_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate);
+                    } /* else if (gamepad1.right_stick_x < 0 && -gamepad1.right_stick_y > 0) {
                         // Quadrant II slow speed
-                        cm1_target = (-Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm2_target = (Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm3_target = (-Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm4_target = (Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
-                    } else if (gamepad1.left_stick_x <= 0 && -gamepad1.left_stick_y <= 0) {
+                        cm1_target = (-Math.pow(gamepad1.right_stick_x, 2) + -Math.pow(gamepad1.right_stick_y, 2) + (rotate)) / slowDriveLimiter;
+                        cm2_target = (Math.pow(gamepad1.right_stick_x, 2) + -Math.pow(gamepad1.right_stick_y, 2) + (-rotate)) / slowDriveLimiter;
+                        cm3_target = (-Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2) + (-rotate)) / slowDriveLimiter;
+                        cm4_target = (Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2) + (rotate)) / slowDriveLimiter;
+                    } */ else if (gamepad1.left_stick_x <= 0 && -gamepad1.left_stick_y <= 0) {
                         // Quadrant III
-                        cm1_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
-                        cm2_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
-                        cm3_target = -Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
-                        cm4_target = Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
-                    } else if (gamepad1.right_stick_x <= 0 && -gamepad1.right_stick_y <= 0) {
+                        cm1_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate);
+                        cm2_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate);
+                        cm3_target = -Math.pow(gamepad1.left_stick_x, 2) + -Math.pow(gamepad1.left_stick_y, 2) + (-rotate);
+                        cm4_target = Math.pow(gamepad1.left_stick_x, 2) + -Math.pow(gamepad1.left_stick_y, 2) + (rotate);
+                    }/* else if (gamepad1.right_stick_x <= 0 && -gamepad1.right_stick_y <= 0) {
                         // Quadrant III slow speed
-                        cm1_target = (-Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr))/ slowDriveLimiter;
-                        cm2_target = (Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm3_target = (-Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm4_target = (Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
-                    } else if (gamepad1.left_stick_x > 0 && -gamepad1.left_stick_y < 0) {
+                        cm1_target = (-Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2) + (rotate))/ slowDriveLimiter;
+                        cm2_target = (Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2) + (-rotate)) / slowDriveLimiter;
+                        cm3_target = (-Math.pow(gamepad1.right_stick_x, 2) + -Math.pow(gamepad1.right_stick_y, 2) + (-rotate)) / slowDriveLimiter;
+                        cm4_target = (Math.pow(gamepad1.right_stick_x, 2) + -Math.pow(gamepad1.right_stick_y, 2) + (rotate)) / slowDriveLimiter;
+                    } */ else if (gamepad1.left_stick_x > 0 && -gamepad1.left_stick_y < 0) {
                         // Quadrant IV
-                        cm1_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
-                        cm2_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
-                        cm3_target = Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr);
-                        cm4_target = -Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr);
-                    } else if (gamepad1.right_stick_x > 0 && -gamepad1.right_stick_y < 0) {
+                        cm1_target = Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate);
+                        cm2_target = -Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate);
+                        cm3_target = Math.pow(gamepad1.left_stick_x, 2) + -Math.pow(gamepad1.left_stick_y, 2) + (-rotate);
+                        cm4_target = -Math.pow(gamepad1.left_stick_x, 2) + -Math.pow(gamepad1.left_stick_y, 2) + (rotate);
+                    } /* else if (gamepad1.right_stick_x > 0 && -gamepad1.right_stick_y < 0) {
                         // Quadrant IV slower speed
-                        cm1_target = (Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm2_target = (-Math.pow(gamepad1.left_stick_x, 2) + Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm3_target = (Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (-rotate) + (straightPwr)) / slowDriveLimiter;
-                        cm4_target = (-Math.pow(gamepad1.left_stick_x, 2) - Math.pow(gamepad1.left_stick_y, 2) + (rotate) + (straightPwr)) / slowDriveLimiter;
-                    } else {
-                        cm1_target = rotate + straightPwr;
-                        cm2_target = -rotate + straightPwr;
-                        cm3_target = -rotate + straightPwr;
-                        cm4_target = rotate + straightPwr;
+                        cm1_target = (Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2) + (rotate)) / slowDriveLimiter;
+                        cm2_target = (-Math.pow(gamepad1.right_stick_x, 2) + Math.pow(gamepad1.right_stick_y, 2) + (-rotate)) / slowDriveLimiter;
+                        cm3_target = (Math.pow(gamepad1.right_stick_x, 2) + -Math.pow(gamepad1.right_stick_y, 2) + (-rotate)) / slowDriveLimiter;
+                        cm4_target = (-Math.pow(gamepad1.right_stick_x, 2) + -Math.pow(gamepad1.right_stick_y, 2) + (rotate)) / slowDriveLimiter;
+                    } */ else {
+                        cm1_target = rotate;
+                        cm2_target = -rotate;
+                        cm3_target = -rotate;
+                        cm4_target = rotate;
                     }
                 } else {
                     // Reset our motors
@@ -219,11 +283,14 @@ public class MainTeleOp extends LinearOpMode {
 //                telemetry.addData("rotating", rotating);
 //                telemetry.addData("intake_power", intakeMotor.getPower());
                 telemetry.addData("armPitchTarget", armPitchTarget);
+
                 telemetry.addData("armPitchPosition", armPitch.getCurrentPosition());
                 telemetry.addData("armPitchVelo", armPitch.getVelocity());
                 telemetry.addData("armExtenderTarget", armExtenderTarget);
                 telemetry.addData("armExtenderPosition", armExtender.getCurrentPosition());
                 telemetry.addData("armPitchVelo", armPitch.getVelocity());
+                telemetry.addData("frpower", cm4.getPower());
+                telemetry.addData("flpower", cm3.getPower());
                 telemetry.update();
             }
         }
