@@ -76,7 +76,7 @@ public class MainTeleOp extends LinearOpMode {
 
                 // Servo (CH):
                 // 0: pixelBayServo
-                // 1: pixelBayCover
+                // 1: pixelBayCoverServo
 
                 //turning script
                 double rotate = 0;
