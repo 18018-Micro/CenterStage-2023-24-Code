@@ -23,9 +23,9 @@ public class MainTeleOp extends LinearOpMode {
         double powerLimiter = 0.45;
 
         int armPitchTarget = 0;
-        double armPitchMax = 1000;
+        double armPitchMax = 100;
         int armExtenderTarget = 0;
-        double armExtenderMax = 2000;
+        double armExtenderMax = 1000;
         int armPitchVelo = 100;
         int armExtenderVelo = 100;
 
@@ -60,8 +60,10 @@ public class MainTeleOp extends LinearOpMode {
             armPitch.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armExtender.setTargetPosition(0);
             armExtender.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            armPitch.setPower(0.85);
+            armPitch.setPower(1);
             armExtender.setPower(0.5);
+            armPitch.setVelocity(10);
+            armExtender.setVelocity(10);
 
             while (opModeIsActive()) {
                 // Control Hub
@@ -168,13 +170,20 @@ public class MainTeleOp extends LinearOpMode {
 
 
                 // arm pitch
-                if (gamepad2.left_stick_y > 0 && armPitchTarget < armPitchMax) {
-                        armPitchTarget += 15;
+                if (gamepad2.a) {
+                        armPitchTarget = 0;
                         armPitch.setTargetPosition(armPitchTarget);
-                } else if (gamepad2.left_stick_y < 0 && armPitchTarget > 0) {
-                    armPitchTarget -= 10;
+                } else if (gamepad2.b) {
+                    armPitchTarget = 10;
+                    armPitch.setTargetPosition(armPitchTarget);
+                } else if (gamepad2.y) {
+                    armPitchTarget = 20;
+                    armPitch.setTargetPosition(armPitchTarget);
+                } else if (gamepad2.x) {
+                    armPitchTarget = 30;
                     armPitch.setTargetPosition(armPitchTarget);
                 }
+
 
                 // arm extension
                 if (gamepad2.right_bumper && armExtenderTarget < armExtenderMax) {
