@@ -40,6 +40,7 @@ public class MainTeleOp extends LinearOpMode {
         DcMotorEx armExtender = (DcMotorEx) hardwareMap.dcMotor.get("armExtender");
         DcMotorEx armPitch = (DcMotorEx) hardwareMap.dcMotor.get("armPitch");
         Servo pixelBayServo = hardwareMap.servo.get("pixelBayServo");
+        Servo pixelBayCoverServo = hardwareMap.servo.get("pixelBayCoverServo");
 
         cm1.setDirection(DcMotorSimple.Direction.REVERSE);
         cm2.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -184,7 +185,6 @@ public class MainTeleOp extends LinearOpMode {
                     armPitch.setTargetPosition(armPitchTarget);
                 }
 
-
                 // arm extension
                 if (gamepad2.right_bumper && armExtenderTarget < armExtenderMax) {
                     armExtenderTarget += 15;
@@ -194,6 +194,19 @@ public class MainTeleOp extends LinearOpMode {
                     armExtender.setTargetPosition(armExtenderTarget);
                 }
 
+                // pixel bay servo control
+                if (gamepad2.left_stick_y > 0) {
+                    pixelBayServo.setPosition(1);
+                } else if (gamepad2.left_stick_y < 0) {
+                    pixelBayServo.setPosition(-1);
+                }
+
+                // pixel bay cover servo control
+                if (gamepad2.right_stick_y > 0) {
+                    pixelBayCoverServo.setPosition(1);
+                } else if (gamepad2.right_stick_y < 0) {
+                    pixelBayCoverServo.setPosition(-1);
+                }
 
                 // Add telemetry data, so we can observe what is happening on the Driver app
 //                telemetry.addData("cm1", cm1_target);
