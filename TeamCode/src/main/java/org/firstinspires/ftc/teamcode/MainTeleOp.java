@@ -167,7 +167,6 @@ public class MainTeleOp extends LinearOpMode {
                     intakeMotor.setPower(0);
                 }
 
-
                 // arm pitch
                 if (gamepad2.a) {
                         armPitchTarget = 0;
@@ -194,26 +193,25 @@ public class MainTeleOp extends LinearOpMode {
 
                 // pixel bay servo control
                 if (gamepad2.left_stick_y > 0) {
-                    pixelBayServo.setPosition(1);
+                    pixelBayServo.setPosition(0);
                 } else if (gamepad2.left_stick_y < 0) {
                     pixelBayServo.setPosition(-1);
                 }
 
                 // pixel bay cover servo control
                 if (gamepad2.right_stick_y > 0) {
-                    pixelBayCoverServo.setPosition(1);
+                    pixelBayCoverServo.setPosition(0);
                 } else if (gamepad2.right_stick_y < 0) {
                     pixelBayCoverServo.setPosition(-1);
                 }
 
-//                telemetry.addData("rotating", rotating);
-//                telemetry.addData("intake_power", intakeMotor.getPower());
                 telemetry.addData("armPitchTarget", armPitchTarget);
                 telemetry.addData("armPitchPosition", armPitch.getCurrentPosition());
                 telemetry.addData("armPitchVelo", armPitch.getVelocity());
                 telemetry.addData("armExtenderTarget", armExtenderTarget);
                 telemetry.addData("armExtenderPosition", armExtender.getCurrentPosition());
                 telemetry.addData("armPitchVelo", armPitch.getVelocity());
+                telemetry.addData("servoPos", pixelBayCoverServo.getPosition());
                 telemetry.addData("rt", gamepad1.right_trigger);
                 telemetry.update();
             }
