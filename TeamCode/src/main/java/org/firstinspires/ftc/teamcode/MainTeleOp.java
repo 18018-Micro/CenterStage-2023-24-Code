@@ -23,7 +23,6 @@ public class MainTeleOp extends LinearOpMode {
         double powerLimiter = 0.85;
 
         int armPitchTarget = 0;
-        double armPitchMax = 100;
         int armExtenderTarget = 0;
         double armExtenderMax = 1000;
         int armPitchVelo = 100;
@@ -85,7 +84,6 @@ public class MainTeleOp extends LinearOpMode {
                 double rotate = 0;
                 boolean rotating;
                 turningPower = 0.65;
-                int slowDriveLimiter = 4;
 
                 // If either our the bumpers are pressed, rotate the robot in that direction.
                 if (gamepad1.right_bumper) {
@@ -208,11 +206,6 @@ public class MainTeleOp extends LinearOpMode {
                     pixelBayCoverServo.setPosition(-1);
                 }
 
-                // Add telemetry data, so we can observe what is happening on the Driver app
-//                telemetry.addData("cm1", cm1_target);
-//                telemetry.addData("cm2", cm2_target);
-//                telemetry.addData("cm3", cm3_target);
-//                telemetry.addData("cm4", cm4_target);
 //                telemetry.addData("rotating", rotating);
 //                telemetry.addData("intake_power", intakeMotor.getPower());
                 telemetry.addData("armPitchTarget", armPitchTarget);
@@ -221,10 +214,7 @@ public class MainTeleOp extends LinearOpMode {
                 telemetry.addData("armExtenderTarget", armExtenderTarget);
                 telemetry.addData("armExtenderPosition", armExtender.getCurrentPosition());
                 telemetry.addData("armPitchVelo", armPitch.getVelocity());
-                telemetry.addData("frpower", cm4.getPower());
-                telemetry.addData("flpower", cm3.getPower());
-                telemetry.addData("brpower", cm2.getPower());
-                telemetry.addData("blpower", cm1.getPower());
+
                 telemetry.addData("rt", gamepad1.right_trigger);
                 telemetry.update();
             }
