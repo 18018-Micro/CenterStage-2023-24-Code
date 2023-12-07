@@ -20,7 +20,7 @@ public class MainTeleOp extends LinearOpMode {
         double cm3_target;
         double cm4_target;
         double turningPower;
-        double powerLimiter = 0.45;
+        double powerLimiter = 0.85;
 
         int armPitchTarget = 0;
         double armPitchMax = 100;
@@ -84,7 +84,7 @@ public class MainTeleOp extends LinearOpMode {
                 //turning script
                 double rotate = 0;
                 boolean rotating;
-                turningPower = 0.85;
+                turningPower = 0.65;
                 int slowDriveLimiter = 4;
 
                 // If either our the bumpers are pressed, rotate the robot in that direction.
