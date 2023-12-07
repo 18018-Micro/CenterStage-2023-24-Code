@@ -214,7 +214,6 @@ public class MainTeleOp extends LinearOpMode {
                 telemetry.addData("armExtenderTarget", armExtenderTarget);
                 telemetry.addData("armExtenderPosition", armExtender.getCurrentPosition());
                 telemetry.addData("armPitchVelo", armPitch.getVelocity());
-
                 telemetry.addData("rt", gamepad1.right_trigger);
                 telemetry.update();
             }
