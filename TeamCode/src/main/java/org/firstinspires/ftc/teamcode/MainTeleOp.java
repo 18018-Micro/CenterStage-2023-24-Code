@@ -66,6 +66,15 @@ public class MainTeleOp extends LinearOpMode {
             armPitch.setVelocity(10);
             armExtender.setVelocity(10);
 
+            // init pressed
+            pixelBayCoverServo.setPosition(-0.2);
+            armExtender.setTargetPosition(10);
+            armPitch.setTargetPosition(-3);
+            pixelBayCoverServo.setPosition(0);
+            armExtender.setTargetPosition(-5);
+
+
+
             while (opModeIsActive()) {
                 // Control Hub
                 // Back left:cm1, back right:cm2
