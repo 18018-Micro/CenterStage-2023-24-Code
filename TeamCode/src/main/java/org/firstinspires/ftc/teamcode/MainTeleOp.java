@@ -54,6 +54,8 @@ public class MainTeleOp extends LinearOpMode {
         armPitch.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armExtender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+
+
         waitForStart();
         if (opModeIsActive()) {
 
@@ -65,6 +67,15 @@ public class MainTeleOp extends LinearOpMode {
             armExtender.setPower(0.5);
             armPitch.setVelocity(10);
             armExtender.setVelocity(10);
+
+            // init pressed
+            pixelBayCoverServo.setPosition(-0.2);
+            armExtender.setTargetPosition(10);
+            armPitch.setTargetPosition(-3);
+            pixelBayCoverServo.setPosition(0);
+            armExtender.setTargetPosition(10);
+
+
 
             while (opModeIsActive()) {
                 // Control Hub
@@ -202,9 +213,9 @@ public class MainTeleOp extends LinearOpMode {
                 }
 
                 // pixel bay cover servo control
-                if (gamepad2.right_stick_y > 0) {
+                if (gamepad2.dpad_up) {
                     pixelBayCoverServo.setPosition(1);
-                } else if (gamepad2.right_stick_y < 0) {
+                } else if (gamepad2.dpad_down) {
                     pixelBayCoverServo.setPosition(-1);
                 }
 
